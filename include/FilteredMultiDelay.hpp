@@ -14,6 +14,8 @@
 
 const std::vector< float > freqs{ 300, 2000 };
 
+namespace laproque {
+
 /**
  * @class FilteredMultiDelay
  * @brief Processing unit which works like MultiDelay with a Filterbank and weighted sum of bands before output.
@@ -80,5 +82,7 @@ private:
     
     float* _band_weights;
 };
+
+} // namespace laproque
 
 #endif /* FilteredMultiDelay_hpp */

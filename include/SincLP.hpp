@@ -12,6 +12,8 @@
 #include <math.h>
 #include "Convolver.hpp"
 
+namespace laproque {
+
 /**
  * @class SincLP
  * @brief Steep lowpass using convolution with a sinc impulse.
@@ -62,5 +64,7 @@ private:
     float* _out_buffer;
     Convolver* _convolver;
 };
+
+} // namespace laproque
 
 #endif /* SincLP_hpp */

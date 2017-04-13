@@ -12,7 +12,7 @@
 
 
 
-SincLP::SincLP(float cutoff_freq, float sample_rate, unsigned block_size, unsigned length) :
+laproque::SincLP::SincLP(float cutoff_freq, float sample_rate, unsigned block_size, unsigned length) :
     _co_freq(cutoff_freq), _sample_rate(sample_rate), _block_size(block_size), _length(length)
 {
     _dly_comp = unsigned( _length/2 );
@@ -58,19 +58,19 @@ SincLP::SincLP(float cutoff_freq, float sample_rate, unsigned block_size, unsign
 }
 
 
-void SincLP::process(float *input, float *output)
+void laproque::SincLP::process(float *input, float *output)
 {
     memcpy( _in_buffer, input, _block_size*sizeof(float) );
     _convolver->process( _in_buffer, _out_buffer );
     memcpy( output, _out_buffer+_dly_comp, _block_size*sizeof(float) );
 }
 
-void SincLP::reset()
+void laproque::SincLP::reset()
 {
     _convolver->reset_input_buffer();
 }
 
-SincLP::~SincLP()
+laproque::SincLP::~SincLP()
 {
     delete [] _in_buffer;
     delete [] _out_buffer;

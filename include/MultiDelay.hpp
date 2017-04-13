@@ -12,6 +12,9 @@
 #include <vector>
 #include <sndfile.h>
 #include <stddef.h>
+
+namespace laproque {
+
 /**
  * @class MultiDelay
  * @brief One channel delay module which supports multiple delay values at once.
@@ -116,6 +119,6 @@ protected:
     
 };
 
-
+} // namespace laproque
 
 #endif /* MultiDelay_hpp */

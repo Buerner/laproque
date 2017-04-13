@@ -15,6 +15,8 @@
 
 #include "Delay.hpp"
 
+namespace laproque {
+
 class FadingDelay : public Delay
 {
 public:
@@ -42,5 +44,7 @@ private:
     float* _fadein_buf;
     float* _fadeout_buf;
 };
+
+} // namespace laproque
 
 #endif /* FadingDelay_hpp */

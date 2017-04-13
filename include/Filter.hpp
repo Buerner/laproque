@@ -9,6 +9,8 @@
 #ifndef Filter_hpp
 #define Filter_hpp
 
+namespace laproque {
+
 /**
  * This enum specifies the type of a filter in the Filter class.
  */
@@ -125,5 +127,7 @@ private:
     void _compute_coeffs();
 
 };
+
+} // namespace laproque
 
 #endif /* defined(__FDN__Filter__) */

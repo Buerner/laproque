@@ -15,7 +15,7 @@ OBJ_DIR = build/.obj/
 BUILD_DIR = build/
 DOC_DIR = doc/
 
-LIB_NAME = laproque.a
+LIB_NAME = libaproque.a
 
 SRC := $(wildcard src/*.cpp)
 SRC := $(filter-out src/main.cpp, $(SRC))

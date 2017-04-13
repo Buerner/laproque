@@ -10,7 +10,7 @@
 #include <math.h>
 #include <cstring>
 
-TimeVarConvolver::TimeVarConvolver(float* imp_resp, unsigned n_samples, unsigned block_size) :
+laproque::TimeVarConvolver::TimeVarConvolver(float* imp_resp, unsigned n_samples, unsigned block_size) :
 Convolver(imp_resp, n_samples, block_size)
 {
     _block_size = block_size;
@@ -20,7 +20,7 @@ Convolver(imp_resp, n_samples, block_size)
     _other_freq_resp = fftwf_alloc_complex(_spectra_size);
 }
 
-TimeVarConvolver::TimeVarConvolver( TimeVarConvolver& tvconv)
+laproque::TimeVarConvolver::TimeVarConvolver( TimeVarConvolver& tvconv)
 : Convolver(tvconv)
 {
     _setup_ramps();
@@ -29,7 +29,7 @@ TimeVarConvolver::TimeVarConvolver( TimeVarConvolver& tvconv)
     _other_freq_resp = fftwf_alloc_complex(_spectra_size);
 }
 
-TimeVarConvolver::~TimeVarConvolver()
+laproque::TimeVarConvolver::~TimeVarConvolver()
 {
     delete [] _up_ramp;
     delete [] _down_ramp;
@@ -38,7 +38,7 @@ TimeVarConvolver::~TimeVarConvolver()
     fftwf_free( _other_freq_resp );
 }
 
-void TimeVarConvolver::_setup_ramps()
+void laproque::TimeVarConvolver::_setup_ramps()
 {
     _up_ramp = new float[_block_size];
     _down_ramp = new float[_block_size];
@@ -55,7 +55,7 @@ void TimeVarConvolver::_setup_ramps()
     }
 }
 
-void TimeVarConvolver::process( float *in_buffer, float *out_buffer )
+void laproque::TimeVarConvolver::process( float *in_buffer, float *out_buffer )
 {
     // Copy input into the buffer assigned to the FFT.
     memcpy( _input+_block_size, in_buffer, _block_size*sizeof(float) );
@@ -94,7 +94,7 @@ void TimeVarConvolver::process( float *in_buffer, float *out_buffer )
     memcpy( _input_spectra+_spectrum_size, _input_spectra, ( _spectra_size-_spectrum_size)*sizeof(fftwf_complex) );
 }
 
-void TimeVarConvolver::set_partitions( fftwf_complex *new_partitions )
+void laproque::TimeVarConvolver::set_partitions( fftwf_complex *new_partitions )
 {
     memcpy( _other_freq_resp, new_partitions, _spectra_size*sizeof(fftwf_complex) );
     _has_changed.store( true );

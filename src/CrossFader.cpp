@@ -9,14 +9,14 @@
 #include "CrossFader.hpp"
 #include <math.h>
 
-CrossFader::CrossFader( unsigned fade_length )
+laproque::CrossFader::CrossFader( unsigned fade_length )
 {
     _sin_fade.resize( fade_length );
     _fade_length = fade_length - 1;
     _compute_fade_function();
 }
 
-void CrossFader::_compute_fade_function()
+void laproque::CrossFader::_compute_fade_function()
 {
     float phase_increment = M_PI * 0.5f / _fade_length;
     float phase = 0.f;
@@ -28,19 +28,19 @@ void CrossFader::_compute_fade_function()
     }
 }
 
-void CrossFader::process( float *fadeout, float *fadein, float *output )
+void laproque::CrossFader::process( float *fadeout, float *fadein, float *output )
 {
     for ( unsigned idx = 0; idx <= _fade_length; idx++ ) {
         output[idx] = fadeout[idx]*_sin_fade[idx] + fadein[idx]*_sin_fade[_fade_length-idx];
     }
 }
 
-unsigned CrossFader::get_fade_length()
+unsigned laproque::CrossFader::get_fade_length()
 {
     return _fade_length + 1;
 }
 
-void CrossFader::set_fade_length( unsigned int fade_length )
+void laproque::CrossFader::set_fade_length( unsigned int fade_length )
 {
     _sin_fade.resize( fade_length );
     _fade_length = fade_length - 1;

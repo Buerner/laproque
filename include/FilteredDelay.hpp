@@ -13,6 +13,7 @@
 #include "Filterbank.hpp"
 #include <vector>
 
+namespace laproque {
 
 /**
  @class FilteredDelay
@@ -91,5 +92,6 @@ private:
     const unsigned _intern_buff_size = 1024;
 };
 
+} //namespace laproque
 
 #endif /* FilteredDelay_hpp */

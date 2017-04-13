@@ -17,6 +17,7 @@
 #include <sndfile.h>
 #include "JackPlugin.hpp"
 
+namespace laproque {
 
 /**
  @class Plays single-channel wav files in Jack Audio Connection Kit.
@@ -112,7 +113,7 @@ private:
     void _jump( int n_files );
 };
 
-
+} // namespace laproque
 
 #endif /* JackPlayer_hpp */
 

@@ -10,7 +10,7 @@
 #include <math.h>
 #include <cstring>
 
-Convolver::Convolver(float* imp_resp, unsigned long n_samples, unsigned block_size)
+laproque::Convolver::Convolver(float* imp_resp, unsigned long n_samples, unsigned block_size)
 : _fft_size( block_size * 2 ),  _fft( block_size * 2 )
 {
     _block_size = block_size;
@@ -42,7 +42,7 @@ Convolver::Convolver(float* imp_resp, unsigned long n_samples, unsigned block_si
     fftwf_free( padded_imp_resp );
 }
 
-Convolver::Convolver( Convolver& conv )
+laproque::Convolver::Convolver( Convolver& conv )
 : _fft( conv.get_fft_size() )
 {
     _block_size = conv.get_block_size();
@@ -55,7 +55,7 @@ Convolver::Convolver( Convolver& conv )
     
 }
 
-Convolver::~Convolver()
+laproque::Convolver::~Convolver()
 {
     fftwf_free( _input_spectra );
     fftwf_free( _freq_resp_parts );
@@ -68,7 +68,7 @@ Convolver::~Convolver()
     fftwf_cleanup();
 }
 
-void Convolver::_make_allocations()
+void laproque::Convolver::_make_allocations()
 {
     // Allocate all the memory the Convolver needs.
     _input_spectra = fftwf_alloc_complex( _spectra_size );
@@ -80,7 +80,7 @@ void Convolver::_make_allocations()
     _result = fftwf_alloc_real( _fft_size );
 }
 
-void Convolver::_compute_freq_resp( float* imp_resp )
+void laproque::Convolver::_compute_freq_resp( float* imp_resp )
 {
 //    // Create zero vector with twice the block size for overlap save convolution.
     float zero_padded_block[_fft_size];
@@ -96,7 +96,7 @@ void Convolver::_compute_freq_resp( float* imp_resp )
     }
 }
 
-void Convolver::_fast_conv()
+void laproque::Convolver::_fast_conv()
 {
     unsigned bin;
     
@@ -124,7 +124,7 @@ void Convolver::_fast_conv()
     
 }
 
-void Convolver::process( float *in_buffer, float *out_buffer )
+void laproque::Convolver::process( float *in_buffer, float *out_buffer )
 {
     // Copy input into the buffer assigned to the FFT.
     memcpy( _input+_block_size, in_buffer, _block_size*sizeof(float) );
@@ -141,7 +141,7 @@ void Convolver::process( float *in_buffer, float *out_buffer )
     memcpy( _input_spectra+_spectrum_size, _input_spectra, (_spectra_size-_spectrum_size)*sizeof(fftwf_complex) );
 }
 
-void Convolver::reset_input_buffer()
+void laproque::Convolver::reset_input_buffer()
 {
     for ( unsigned idx = 0; idx < _spectra_size; idx++ ) {
         _input_spectra[idx][0] = 0.f;
@@ -153,28 +153,28 @@ void Convolver::reset_input_buffer()
     }
 }
 
-unsigned Convolver::get_fft_size()
+unsigned laproque::Convolver::get_fft_size()
 {
     return _fft_size;
 }
-unsigned Convolver::get_block_size()
+unsigned laproque::Convolver::get_block_size()
 {
     return _block_size;
 }
-unsigned Convolver::get_spectrum_size()
+unsigned laproque::Convolver::get_spectrum_size()
 {
     return _spectrum_size;
 }
-unsigned Convolver::get_spectra_size()
+unsigned laproque::Convolver::get_spectra_size()
 {
     return _spectra_size;
 }
-unsigned Convolver::get_n_parts()
+unsigned laproque::Convolver::get_n_parts()
 {
     return _n_parts;
 }
 
-void Convolver::set_freq_response( fftwf_complex *new_response )
+void laproque::Convolver::set_freq_response( fftwf_complex *new_response )
 {
     memcpy( _freq_resp_parts, new_response, _spectra_size*sizeof(fftwf_complex) );
 }

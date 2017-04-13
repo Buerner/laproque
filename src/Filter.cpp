@@ -16,7 +16,7 @@
 
 
 // constructor
-Filter::Filter( filter_type type,
+laproque::Filter::Filter( filter_type type,
                 float cutoff_freq,
                 unsigned sample_rate
                )
@@ -29,20 +29,20 @@ Filter::Filter( filter_type type,
     
 }
 
-void Filter::set_sample_rate( unsigned int sample_rate )
+void laproque::Filter::set_sample_rate( unsigned int sample_rate )
 {
     _sample_rate = sample_rate;
     _compute_coeffs();
 }
 
-float Filter::get_cutoff_freq()
+float laproque::Filter::get_cutoff_freq()
 {
     return _cutoff_freq;
     
 }
 
 // function which calculates the filter coefficient
-void Filter::_compute_coeffs()
+void laproque::Filter::_compute_coeffs()
 {
     float c = 1.f / tanf(M_PI * (_cutoff_freq/_sample_rate));
     
@@ -61,7 +61,7 @@ void Filter::_compute_coeffs()
 };
 
 // overload braces operator to compute the next output value
-float Filter::operator()(float in_sample)
+float laproque::Filter::operator()(float in_sample)
 {
     float non_recursive = in_sample * _b_coeffs[0];
     float recursive = 0;
@@ -78,7 +78,7 @@ float Filter::operator()(float in_sample)
 }
 
 // Function which processes muliple samples to reduce function calls.
-void Filter::process( float* input, float* output, unsigned long long n_frames )
+void laproque::Filter::process( float* input, float* output, unsigned long long n_frames )
 {
     _MM_SET_DENORMALS_ZERO_MODE(_MM_DENORMALS_ZERO_ON);
     
@@ -98,19 +98,19 @@ void Filter::process( float* input, float* output, unsigned long long n_frames )
     _out_dlyline = output[n_frames-1];
 }
 
-void Filter::set_cutoff_freq( float co_freq )
+void laproque::Filter::set_cutoff_freq( float co_freq )
 {
     _cutoff_freq = co_freq;
     _compute_coeffs();
 }
 
-void Filter::reset()
+void laproque::Filter::reset()
 {
     _in_dlyline = 0.f;
     _out_dlyline = 0.f;
 }
 
-void Filter::reverse()
+void laproque::Filter::reverse()
 {
     _in_dlyline = _in_dlyline_backup;
     _out_dlyline = _out_dlyline_backup;

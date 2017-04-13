@@ -11,6 +11,8 @@
 
 #include <jack/jack.h>
 
+namespace laproque {
+
 // short version for jack sample type
 typedef jack_default_audio_sample_t jack_sample; 
 
@@ -136,5 +138,7 @@ private:
     
     bool _is_active;
 };
+
+} // namespace laproque
 
 #endif /* __FDN__JackClient__ */

@@ -10,7 +10,7 @@
 #include <stdio.h>
 #include <sndfile.h>
 
-JackPlugin::JackPlugin(const char* name,
+laproque::JackPlugin::JackPlugin(const char* name,
                        unsigned n_inputs,
                        unsigned n_outputs
                        )
@@ -68,17 +68,17 @@ JackPlugin::JackPlugin(const char* name,
     }
 }
 
-unsigned JackPlugin::get_n_inputs()
+unsigned laproque::JackPlugin::get_n_inputs()
 {
     return _n_in_ports;
 }
 
-unsigned JackPlugin::get_n_outputs()
+unsigned laproque::JackPlugin::get_n_outputs()
 {
     return _n_out_ports;
 }
 
-void JackPlugin::activate()
+void laproque::JackPlugin::activate()
 {
     if( jack_set_process_callback(_jack_client, audio_callback, this) )
         printf("Unable to set JACK audio callback funtion.");
@@ -88,12 +88,12 @@ void JackPlugin::activate()
     else _is_active = true;
 }
 
-bool JackPlugin::is_active()
+bool laproque::JackPlugin::is_active()
 {
     return _is_active;
 }
 
-void JackPlugin::deactivate()
+void laproque::JackPlugin::deactivate()
 {
     if ( _is_active )
     {
@@ -103,7 +103,7 @@ void JackPlugin::deactivate()
 }
 
 
-void JackPlugin::impulse_response( float** outputs, unsigned int n_frames )
+void laproque::JackPlugin::impulse_response( float** outputs, unsigned int n_frames )
 {
     unsigned prt, idx;
     
@@ -151,7 +151,7 @@ void JackPlugin::impulse_response( float** outputs, unsigned int n_frames )
 
 }
 
-void JackPlugin::write_imp_resp( unsigned int n_frames )
+void laproque::JackPlugin::write_imp_resp( unsigned int n_frames )
 {
     unsigned prt;
     
@@ -188,7 +188,7 @@ void JackPlugin::write_imp_resp( unsigned int n_frames )
     }
 }
 
-JackPlugin::~JackPlugin()
+laproque::JackPlugin::~JackPlugin()
 {
     if (_is_active) {
         deactivate();
@@ -202,22 +202,22 @@ JackPlugin::~JackPlugin()
     delete [] _in_buffers;
 }
 
-jack_nframes_t JackPlugin::get_sample_rate()
+jack_nframes_t laproque::JackPlugin::get_sample_rate()
 {
     return _sample_rate;
 }
 
-jack_nframes_t JackPlugin::get_block_size()
+jack_nframes_t laproque::JackPlugin::get_block_size()
 {
     return _block_size;
 }
 
-jack_client_t* JackPlugin::client()
+jack_client_t* laproque::JackPlugin::client()
 {
     return _jack_client;
 }
 
-jack_port_t* JackPlugin::get_out_port( unsigned index )
+jack_port_t* laproque::JackPlugin::get_out_port( unsigned index )
 {
     if ( index < _n_out_ports ) return _out_ports[index];
     else return nullptr;

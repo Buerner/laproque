@@ -12,6 +12,8 @@
 #include <stdio.h>
 #include <vector>
 
+namespace laproque {
+
 /**
  @class Sine square fading of two input signals.
  */
@@ -41,5 +43,7 @@ private:
     void _compute_fade_function();
     std::vector<float> _sin_fade;
 };
+
+} // namespace laproque
 
 #endif /* CrossFader_hpp */

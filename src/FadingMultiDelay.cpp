@@ -12,9 +12,9 @@
 
 #include "FadingMultiDelay.hpp"
 
-const unsigned FadingMultiDelay::N_DELAYS_MAX;
+const unsigned laproque::FadingMultiDelay::N_DELAYS_MAX;
 
-FadingMultiDelay::FadingMultiDelay( unsigned max_delay ) :
+laproque::FadingMultiDelay::FadingMultiDelay( unsigned max_delay ) :
 _buffer_size( max_delay )
 {
     _buffer = new float[max_delay];
@@ -31,13 +31,13 @@ _buffer_size( max_delay )
     reset();
 }
 
-FadingMultiDelay::~FadingMultiDelay()
+laproque::FadingMultiDelay::~FadingMultiDelay()
 {
     delete [] _buffer;
     delete [] _core_buffer;
 }
 
-void FadingMultiDelay::process( float *input, float *output, unsigned long n_frames )
+void laproque::FadingMultiDelay::process( float *input, float *output, unsigned long n_frames )
 {
     if ( _has_changed.load() ) {
         _update();
@@ -93,19 +93,19 @@ void FadingMultiDelay::process( float *input, float *output, unsigned long n_fra
     _has_changed.store( false );
 }
 
-unsigned FadingMultiDelay::get_n_delays()
+unsigned laproque::FadingMultiDelay::get_n_delays()
 {
     return _n_delays;
 }
 
-void FadingMultiDelay::kill_last()
+void laproque::FadingMultiDelay::kill_last()
 {
     if (_n_delays) {
         _delays[_n_delays-1].set_status( DYING );
     }
 }
 
-void FadingMultiDelay::add_delay( unsigned long n_samples_delay, float weight )
+void laproque::FadingMultiDelay::add_delay( unsigned long n_samples_delay, float weight )
 {
     // Check if delay value works with buffer size
     if ( n_samples_delay < _buffer_size && n_samples_delay > 0 )
@@ -118,7 +118,7 @@ void FadingMultiDelay::add_delay( unsigned long n_samples_delay, float weight )
     }
 }
 
-void FadingMultiDelay::_update_min_delay()
+void laproque::FadingMultiDelay::_update_min_delay()
 {
     _min_delay = (unsigned long)_buffer_size;
     unsigned long delay;
@@ -129,7 +129,7 @@ void FadingMultiDelay::_update_min_delay()
     }
 }
 
-void FadingMultiDelay::set_delays( unsigned long* delays, float* weights, unsigned n_values )
+void laproque::FadingMultiDelay::set_delays( unsigned long* delays, float* weights, unsigned n_values )
 {
     if ( !_has_changed.load() )
     {
@@ -143,7 +143,7 @@ void FadingMultiDelay::set_delays( unsigned long* delays, float* weights, unsign
     }
 }
 
-void FadingMultiDelay::_update( )
+void laproque::FadingMultiDelay::_update( )
 {
     unsigned dly;
     
@@ -174,7 +174,7 @@ void FadingMultiDelay::_update( )
     // Note: Dont update minumum here because old delays could be shorter.
 }
 
-void FadingMultiDelay::set_weights( float* new_weights )
+void laproque::FadingMultiDelay::set_weights( float* new_weights )
 {
     for ( unsigned idx = 0; idx < _n_delays; idx++ )
     {
@@ -183,7 +183,7 @@ void FadingMultiDelay::set_weights( float* new_weights )
     }
 }
 
-void FadingMultiDelay::reset()
+void laproque::FadingMultiDelay::reset()
 {
     // Set buffer values to 0
     for ( ptrdiff_t idx = 0; idx < _buffer_size; idx++ )
@@ -194,14 +194,14 @@ void FadingMultiDelay::reset()
     _writer = _buffer;
 }
 
-void FadingMultiDelay::clear_delays()
+void laproque::FadingMultiDelay::clear_delays()
 {
     for ( unsigned dly = 0; dly < N_DELAYS_MAX; ++dly ) {
         if ( _delays[dly].get_status() != DEAD ) _delays[dly].set_status( DYING );
     }
 }
 
-void FadingMultiDelay::print_buffer( unsigned n_frames )
+void laproque::FadingMultiDelay::print_buffer( unsigned n_frames )
 {
     long part1 = _buffer_end - _writer;
     if ( part1 > ptrdiff_t(n_frames) ) {
@@ -216,20 +216,20 @@ void FadingMultiDelay::print_buffer( unsigned n_frames )
 }
 
 
-FadingMultiDelay::_DelayCore::_DelayCore( float* buf, float* buf_end, unsigned long n_delay, float** writer ) :
+laproque::FadingMultiDelay::_DelayCore::_DelayCore( float* buf, float* buf_end, unsigned long n_delay, float** writer ) :
 _buf( buf ), _buf_end( buf_end ), _wtr( writer ), _buf_size( buf_end - buf )
 {
     set_delay( n_delay, 1.f );
     _status = BORN;
 }
 
-FadingMultiDelay::_DelayCore::_DelayCore() :
+laproque::FadingMultiDelay::_DelayCore::_DelayCore() :
 _buf( nullptr ), _buf_end( nullptr ), _buf_size( 0 )
 {
     _status = DEAD;
 }
 
-FadingMultiDelay::_DelayCore::_DelayCore( const _DelayCore &obj ) :
+laproque::FadingMultiDelay::_DelayCore::_DelayCore( const _DelayCore &obj ) :
 _buf( obj._buf ), _buf_end( obj._buf_end ), _wtr( obj._wtr ), _buf_size( obj._buf_size )
 {
     _rdr = obj._rdr;
@@ -241,7 +241,7 @@ _buf( obj._buf ), _buf_end( obj._buf_end ), _wtr( obj._wtr ), _buf_size( obj._bu
     _old_wgt = obj._old_wgt;
 }
 
-FadingMultiDelay::_DelayCore &FadingMultiDelay::_DelayCore::operator= ( const FadingMultiDelay::_DelayCore &obj )
+laproque::FadingMultiDelay::_DelayCore &laproque::FadingMultiDelay::_DelayCore::operator= ( const laproque::FadingMultiDelay::_DelayCore &obj )
 {
     this->_buf = obj._buf;
     this->_buf_end = obj._buf_end;
@@ -259,7 +259,7 @@ FadingMultiDelay::_DelayCore &FadingMultiDelay::_DelayCore::operator= ( const Fa
     return *this;
 }
 
-void FadingMultiDelay::_DelayCore::set_delay( unsigned long delay, float weight )
+void laproque::FadingMultiDelay::_DelayCore::set_delay( unsigned long delay, float weight )
 {
     _old_wgt = _wgt;
     _wgt = weight;
@@ -276,23 +276,23 @@ void FadingMultiDelay::_DelayCore::set_delay( unsigned long delay, float weight 
 }
 
 
-void FadingMultiDelay::_DelayCore::set_status( FadingMultiDelay::FadeBehavior status )
+void laproque::FadingMultiDelay::_DelayCore::set_status( laproque::FadingMultiDelay::FadeBehavior status )
 {
     _status = status;
     _to_fade = N_FADE;
 }
 
-unsigned long FadingMultiDelay::_DelayCore::get_delay()
+unsigned long laproque::FadingMultiDelay::_DelayCore::get_delay()
 {
     return _n_dly;
 }
 
-FadingMultiDelay::FadeBehavior FadingMultiDelay::_DelayCore::get_status()
+laproque::FadingMultiDelay::FadeBehavior laproque::FadingMultiDelay::_DelayCore::get_status()
 {
     return _status;
 }
 
-void FadingMultiDelay::_DelayCore::process( float* output, unsigned  long n_frames )
+void laproque::FadingMultiDelay::_DelayCore::process( float* output, unsigned  long n_frames )
 {
     unsigned long idx;
     unsigned long n_rem = n_frames;
@@ -396,7 +396,7 @@ void FadingMultiDelay::_DelayCore::process( float* output, unsigned  long n_fram
 }
 
 
-const float FadingMultiDelay::fade_in[128] = {
+const float laproque::FadingMultiDelay::fade_in[128] = {
     0.00000000000,
     0.00015297136,
     0.00061179191,
@@ -527,7 +527,7 @@ const float FadingMultiDelay::fade_in[128] = {
     1.00000000000
 };
 
-const float FadingMultiDelay::fade_out[128]
+const float laproque::FadingMultiDelay::fade_out[128]
 {
     1.00000000000,
     0.99984705448,

@@ -11,6 +11,8 @@
 
 #include <stddef.h>
 
+namespace laproque {
+
 /**
  * @class Delay
  * @brief Simple single delay module
@@ -94,5 +96,7 @@ protected:
     float* _writer;
 
 };
+
+} // namespace laproque
 
 #endif /* Delay_hpp */

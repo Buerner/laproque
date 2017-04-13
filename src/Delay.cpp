@@ -10,7 +10,7 @@
 #include <algorithm>
 #include <cstring>
 
-Delay::Delay( unsigned n_delay, unsigned max_delay )
+laproque::Delay::Delay( unsigned n_delay, unsigned max_delay )
 {
     _buffer_size = max_delay;
     _n_delay = n_delay;
@@ -20,12 +20,12 @@ Delay::Delay( unsigned n_delay, unsigned max_delay )
     reset();
 }
 
-Delay::~Delay()
+laproque::Delay::~Delay()
 {
     delete [] _buffer;
 }
 
-float Delay::get_one()
+float laproque::Delay::get_one()
 {    
     if ( _writer == _buffer_end ) _writer = _buffer;
     if ( _reader == _buffer_end ) _reader = _buffer;
@@ -33,7 +33,7 @@ float Delay::get_one()
     return *_reader++;
 }
 
-void Delay::set_one( float input )
+void laproque::Delay::set_one( float input )
 {
     if ( _writer == _buffer_end ) _writer = _buffer;
     if ( _reader == _buffer_end ) _reader = _buffer;
@@ -41,7 +41,7 @@ void Delay::set_one( float input )
     *_writer++ = input;
 }
 
-long Delay::get_delay()
+long laproque::Delay::get_delay()
 {
     if ( _writer > _reader ) return _writer - _reader;
     else
@@ -50,7 +50,7 @@ long Delay::get_delay()
     }
 }
 
-float Delay::operator()( float input )
+float laproque::Delay::operator()( float input )
 {
     if ( _writer == _buffer_end ) _writer = _buffer;
     if ( _reader == _buffer_end ) _reader = _buffer;
@@ -59,7 +59,7 @@ float Delay::operator()( float input )
     return *_reader++;
 }
 
-void Delay::process( float *input, float* output, unsigned long n_samples )
+void laproque::Delay::process( float *input, float* output, unsigned long n_samples )
 {
     // There is nothing to do when the delay is 0.
     if ( _n_delay == 0 ) {
@@ -100,7 +100,7 @@ void Delay::process( float *input, float* output, unsigned long n_samples )
     }
 }
 
-void Delay::set_delay( long new_delay )
+void laproque::Delay::set_delay( long new_delay )
 {
     if ( new_delay < _buffer_size) {
         _reader = _writer - new_delay;
@@ -110,7 +110,7 @@ void Delay::set_delay( long new_delay )
     }
 }
 
-void Delay::reset()
+void laproque::Delay::reset()
 {
     for ( int idx = 0; idx < _buffer_size; idx++ )
     {
@@ -121,7 +121,7 @@ void Delay::reset()
     _writer = _buffer + _n_delay;
 }
 
-void Delay::replace_buffer( float *sample_data, unsigned int n_frames )
+void laproque::Delay::replace_buffer( float *sample_data, unsigned int n_frames )
 {
     // Check if n_frames exceeds buffer size.
     if ( ptrdiff_t(n_frames) <= _buffer_size) {

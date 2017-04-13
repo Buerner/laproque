@@ -12,6 +12,8 @@
 #include <stdio.h>
 #include <fftw3.h>
 
+namespace laproque {
+
 /**
  * @brief Takes care of getting a FFTW3f 1D real to complex or complex to real FFT ready.
  *
@@ -68,5 +70,6 @@ private:
     fftwf_plan _ifft_plan;
 };
 
+} // namespace laproque
 
 #endif /* FFThelper_hpp */

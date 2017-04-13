@@ -14,20 +14,20 @@
 #include <algorithm>
 #include <cstring>
 
-JackPlayer::JackPlayer() :
+laproque::JackPlayer::JackPlayer() :
 JackPlugin("Player", 0, 1), _gen(std::random_device{}())
 {
     _setup_fades();
 }
 
-unsigned JackPlayer::add_file( std::string file_path )
+unsigned laproque::JackPlayer::add_file( std::string file_path )
 {
     _playlist.push_back( file_path );
     _read_audio( file_path );
     return unsigned(_playlist.size() - 1);
 }
 
-void JackPlayer::add_directory( std::string dir_path )
+void laproque::JackPlayer::add_directory( std::string dir_path )
 {
     DIR *dir = opendir( dir_path.c_str() );
     if( !dir )
@@ -52,7 +52,7 @@ void JackPlayer::add_directory( std::string dir_path )
     closedir(dir);
 }
 
-void JackPlayer::select_by_idx( unsigned int idx )
+void laproque::JackPlayer::select_by_idx( unsigned int idx )
 {
     if ( idx < _playlist.size() )
     {
@@ -64,14 +64,14 @@ void JackPlayer::select_by_idx( unsigned int idx )
     }
 }
 
-void JackPlayer::shuffle()
+void laproque::JackPlayer::shuffle()
 {
     std::uniform_int_distribution<unsigned> distr(0, _n_tracks);
     if ( _playing.load() ) stop();
     select_by_idx( distr(_gen) );
 }
 
-void JackPlayer::shuffle_unique()
+void laproque::JackPlayer::shuffle_unique()
 {
     std::uniform_int_distribution<unsigned> distr(0, _n_tracks);
     
@@ -85,7 +85,7 @@ void JackPlayer::shuffle_unique()
     
 }
 
-void JackPlayer::play()
+void laproque::JackPlayer::play()
 {
     if ( _n_ready == 0 && _playlist.size()>0 ) {
         select_by_idx(0);
@@ -95,13 +95,13 @@ void JackPlayer::play()
     _playing.store( true );
 }
 
-void JackPlayer::pause()
+void laproque::JackPlayer::pause()
 {
     if ( _playing.load() ) _stopped.store( true );
     _playing.store( false );
 }
 
-void JackPlayer::stop()
+void laproque::JackPlayer::stop()
 {
     if ( _playing.load() ) _stopped.store( true );
     _playing.store( false );
@@ -110,24 +110,24 @@ void JackPlayer::stop()
     _n_ready = _audio_buffers[_current_idx.load()].size();
 }
 
-void JackPlayer::start( std::string file_path )
+void laproque::JackPlayer::start( std::string file_path )
 {
     stop();
     select_by_idx( add_file( file_path ) );
     play();
 }
 
-void JackPlayer::next()
+void laproque::JackPlayer::next()
 {
     _shuffle.load() ? shuffle() : _jump(1);
 }
 
-void JackPlayer::previous()
+void laproque::JackPlayer::previous()
 {
     _jump( -1 );
 }
 
-void JackPlayer::_jump( int n_files )
+void laproque::JackPlayer::_jump( int n_files )
 {
     if ( _playlist.size()>0 ) {
         int new_idx = _current_idx.load();
@@ -140,7 +140,7 @@ void JackPlayer::_jump( int n_files )
     }
 }
 
-void JackPlayer::_setup_fades()
+void laproque::JackPlayer::_setup_fades()
 {
     _fadein.resize( _block_size );
     _fadeout.resize( _block_size );
@@ -158,7 +158,7 @@ void JackPlayer::_setup_fades()
     }
 }
 
-void JackPlayer::render_audio(  jack_nframes_t n_frames
+void laproque::JackPlayer::render_audio(  jack_nframes_t n_frames
                               , jack_sample **in_buffers
                               , jack_sample **out_buffers
                               )
@@ -218,7 +218,7 @@ void JackPlayer::render_audio(  jack_nframes_t n_frames
     }
 }
 
-void JackPlayer::_read_audio( std::string file_path )
+void laproque::JackPlayer::_read_audio( std::string file_path )
 {
     if ( !_playing ) {
         SF_INFO audio_info;
@@ -236,52 +236,52 @@ void JackPlayer::_read_audio( std::string file_path )
     }
 }
 
-bool JackPlayer::is_playing()
+bool laproque::JackPlayer::is_playing()
 {
     return _playing.load();
 }
 
-bool JackPlayer::get_autoplay()
+bool laproque::JackPlayer::get_autoplay()
 {
     return _autoplay.load();
 }
 
-bool JackPlayer::get_loop()
+bool laproque::JackPlayer::get_loop()
 {
     return _loop.load();
 }
 
-bool JackPlayer::get_shuffle()
+bool laproque::JackPlayer::get_shuffle()
 {
     return _shuffle.load();
 }
 
-unsigned JackPlayer::get_n_tracks()
+unsigned laproque::JackPlayer::get_n_tracks()
 {
     return _audio_buffers.size();
 }
 
-void JackPlayer::set_autoplay( bool value )
+void laproque::JackPlayer::set_autoplay( bool value )
 {
     _autoplay.store( value );
 }
 
-void JackPlayer::set_loop( bool value )
+void laproque::JackPlayer::set_loop( bool value )
 {
     _loop.store( value );
 }
 
-void JackPlayer::set_shuffle( bool value )
+void laproque::JackPlayer::set_shuffle( bool value )
 {
     _shuffle.store( value );
 }
 
-JackPlayer::~JackPlayer()
+laproque::JackPlayer::~JackPlayer()
 {
     deactivate();
 }
 
-void JackPlayer::print_status()
+void laproque::JackPlayer::print_status()
 {
     printf("Current Track: %i %lu %s\n", _current_idx.load(), _audio_buffers[_current_idx].size(), _playlist[_current_idx].c_str() );
     printf( "----- Playlist: %i Tracks -----\n", _n_tracks  );

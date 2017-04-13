@@ -10,7 +10,7 @@
 #include <algorithm>
 #include <cstring>
 
-MultiDelay::MultiDelay( unsigned max_delay )
+laproque::MultiDelay::MultiDelay( unsigned max_delay )
 {
     _buffer_size = max_delay;
     _buffer = new float[max_delay];
@@ -18,12 +18,12 @@ MultiDelay::MultiDelay( unsigned max_delay )
     reset();
 }
 
-MultiDelay::~MultiDelay()
+laproque::MultiDelay::~MultiDelay()
 {
     delete [] _buffer;
 }
 
-float MultiDelay::operator() ( float input )
+float laproque::MultiDelay::operator() ( float input )
 {
     float result = 0;
     if ( _writer >= _buffer_end ) { _writer -= _buffer_size; }
@@ -38,7 +38,7 @@ float MultiDelay::operator() ( float input )
     return result;
 }
 
-void MultiDelay::get_one( float* output )
+void laproque::MultiDelay::get_one( float* output )
 {
     if ( _writer - _buffer >= _buffer_size ) { _writer -= _buffer_size; }
     
@@ -49,13 +49,13 @@ void MultiDelay::get_one( float* output )
     }
 }
 
-void MultiDelay::set_one( float input )
+void laproque::MultiDelay::set_one( float input )
 {
     if ( _writer - _buffer >= _buffer_size ) { _writer -= _buffer_size; }
     *_writer++ = input;
 }
 
-void MultiDelay::process( float *input, float* output, unsigned long n_frames )
+void laproque::MultiDelay::process( float *input, float* output, unsigned long n_frames )
 {
     for ( unsigned idx = 0; idx < n_frames; idx++) {
         output[idx] = operator()(input[idx]);
@@ -123,7 +123,7 @@ void MultiDelay::process( float *input, float* output, unsigned long n_frames )
 //    }
 }
 
-void MultiDelay::add_delay( long n_samples_delay, float weight )
+void laproque::MultiDelay::add_delay( long n_samples_delay, float weight )
 {
     // Check if delay already exists
     if(std::find(_n_samples_delay.begin(), _n_samples_delay.end(), n_samples_delay) != _n_samples_delay.end())
@@ -150,7 +150,7 @@ void MultiDelay::add_delay( long n_samples_delay, float weight )
     }
 }
 
-void MultiDelay::set_delays( long* new_delays )
+void laproque::MultiDelay::set_delays( long* new_delays )
 {
     for ( unsigned idx = 0; idx < _n_delays; idx++ )
     {
@@ -167,7 +167,7 @@ void MultiDelay::set_delays( long* new_delays )
     }
 }
 
-void MultiDelay::set_weights( float* new_weights )
+void laproque::MultiDelay::set_weights( float* new_weights )
 {
     for ( unsigned idx = 0; idx < _n_delays; idx++ )
     {
@@ -175,7 +175,7 @@ void MultiDelay::set_weights( float* new_weights )
     }
 }
 
-void MultiDelay::reset()
+void laproque::MultiDelay::reset()
 {
     // Set buffer values to 0
     for ( ptrdiff_t idx = 0; idx < _buffer_size; idx++ )
@@ -192,7 +192,7 @@ void MultiDelay::reset()
     _n_ready_write = _buffer_size;
 }
 
-void MultiDelay::clear_delays()
+void laproque::MultiDelay::clear_delays()
 {
     _n_samples_delay.clear();
     _readers.clear();
@@ -200,7 +200,7 @@ void MultiDelay::clear_delays()
     _n_delays = 0;
 }
 
-void MultiDelay::replace_buffer( float* sample_data, unsigned long n_frames )
+void laproque::MultiDelay::replace_buffer( float* sample_data, unsigned long n_frames )
 {
     // Check if n_frames exceeds buffer size.
     if ( ptrdiff_t(n_frames) <= _buffer_size) {
@@ -227,7 +227,7 @@ void MultiDelay::replace_buffer( float* sample_data, unsigned long n_frames )
     }
 }
 
-void MultiDelay::print_buffer( unsigned n_frames )
+void laproque::MultiDelay::print_buffer( unsigned n_frames )
 {
     long part1 = _buffer_end - _writer;
     if ( part1 > ptrdiff_t(n_frames) ) {
@@ -241,7 +241,7 @@ void MultiDelay::print_buffer( unsigned n_frames )
     }
 }
 
-//void MultiDelay::write_buffer( SNDFILE *audio_file )
+//void laproque::MultiDelay::write_buffer( SNDFILE *audio_file )
 //{
 //    sf_write_float(audio_file, _buffer, _buffer_size);
 //}

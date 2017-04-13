@@ -8,7 +8,7 @@
 
 #include "FilteredDelay.hpp"
 
-FilteredDelay::FilteredDelay( unsigned n_delay
+laproque::FilteredDelay::FilteredDelay( unsigned n_delay
                               , unsigned max_delay
                               , std::vector<float> co_freqs
                               , unsigned sample_rate
@@ -34,7 +34,7 @@ FilteredDelay::FilteredDelay( unsigned n_delay
     reset_weights();
 }
 
-FilteredDelay::~FilteredDelay()
+laproque::FilteredDelay::~FilteredDelay()
 {
     for ( unsigned band = 0; band < _n_bands; band++) {
         delete [] _band_buffer[band];
@@ -44,7 +44,7 @@ FilteredDelay::~FilteredDelay()
     delete [] _delay_buffer;
 }
 
-float FilteredDelay::operator()( float input )
+float laproque::FilteredDelay::operator()( float input )
 {
     float output;
     Delay::process( &input, &output, 1 );
@@ -59,7 +59,7 @@ float FilteredDelay::operator()( float input )
     return output;
 }
 
-void FilteredDelay::process( float *input, float *output, unsigned long n_frames )
+void laproque::FilteredDelay::process( float *input, float *output, unsigned long n_frames )
 {
     _n_remaining = n_frames;
     
@@ -89,7 +89,7 @@ void FilteredDelay::process( float *input, float *output, unsigned long n_frames
     }
 }
 
-void FilteredDelay::reset_weights()
+void laproque::FilteredDelay::reset_weights()
 {
     _band_weights.resize( _n_bands );
     for ( unsigned band = 0; band < _n_bands; band++ ) {
@@ -97,26 +97,26 @@ void FilteredDelay::reset_weights()
     }
 }
 
-void FilteredDelay::set_co_freqs( std::vector<float> new_co_freqs )
+void laproque::FilteredDelay::set_co_freqs( std::vector<float> new_co_freqs )
 {
     _filterbank.set_co_freqs( new_co_freqs );
 }
 
-void FilteredDelay::set_all_weights( std::vector<float> new_band_weights )
+void laproque::FilteredDelay::set_all_weights( std::vector<float> new_band_weights )
 {
     if ( _band_weights.size() == new_band_weights.size() ) {
         _band_weights = new_band_weights;
     }
 }
 
-void FilteredDelay::set_band_weight( float weight, unsigned int band_idx )
+void laproque::FilteredDelay::set_band_weight( float weight, unsigned int band_idx )
 {
     if ( band_idx < _band_weights.size() ) {
         _band_weights[band_idx] = weight;
     }
 }
 
-unsigned FilteredDelay::get_n_bands()
+unsigned laproque::FilteredDelay::get_n_bands()
 {
     return _n_bands;
 }

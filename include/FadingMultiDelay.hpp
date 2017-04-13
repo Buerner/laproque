@@ -15,6 +15,8 @@
 #include <stddef.h>
 #include <atomic>
 
+namespace laproque {
+
 /**
  * @class FadingMultiDelay
  * @brief One channel delay module which supports multiple delay values at once.
@@ -175,6 +177,6 @@ private:
     
 };
 
-
+} // namespace laproque
 
 #endif /* FadingMultiDelay_hpp */

@@ -11,7 +11,7 @@
 
 #include "FadingDelay.hpp"
 
-FadingDelay::FadingDelay( unsigned long fade_length, unsigned delay, unsigned max_delay ) : Delay( delay, max_delay )
+laproque::FadingDelay::FadingDelay( unsigned long fade_length, unsigned delay, unsigned max_delay ) : Delay( delay, max_delay )
 {
     _fade_length = fade_length;
     
@@ -23,7 +23,7 @@ FadingDelay::FadingDelay( unsigned long fade_length, unsigned delay, unsigned ma
     }
 
 
-void FadingDelay::process( float *input, float *output, unsigned long n_samples )
+void laproque::FadingDelay::process( float *input, float *output, unsigned long n_samples )
 {
     _n_remaining = long(n_samples);
     
@@ -80,7 +80,7 @@ void FadingDelay::process( float *input, float *output, unsigned long n_samples 
     Delay::process( input, output, (unsigned long)(_n_remaining) );
 }
 
-void FadingDelay::set_delay( long new_delay )
+void laproque::FadingDelay::set_delay( long new_delay )
 {
     if ( new_delay < _buffer_size) {
         _has_changed.store( true );
@@ -88,7 +88,7 @@ void FadingDelay::set_delay( long new_delay )
     }
 }
 
-void FadingDelay::_setup_fades()
+void laproque::FadingDelay::_setup_fades()
 {
     float phase = 0;
     float phase_increment = M_PI_2 / (_fade_length-1);
@@ -105,18 +105,18 @@ void FadingDelay::_setup_fades()
     }
 }
 
-void FadingDelay::reset()
+void laproque::FadingDelay::reset()
 {
     Delay::reset();
     _to_fade = 0;
 }
 
-void FadingDelay::set_fade_out( bool do_fade )
+void laproque::FadingDelay::set_fade_out( bool do_fade )
 {
     _fade_out.store( do_fade );
 }
 
-FadingDelay::~FadingDelay()
+laproque::FadingDelay::~FadingDelay()
 {
     delete [] _fadein_buf;
     delete [] _fadeout_buf;

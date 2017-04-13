@@ -8,7 +8,7 @@
 
 #include "FilteredMultiDelay.hpp"
 
-FilteredMultiDelay::FilteredMultiDelay( unsigned n_bands, unsigned sample_rate, unsigned block_size, unsigned max_delay )
+laproque::FilteredMultiDelay::FilteredMultiDelay( unsigned n_bands, unsigned sample_rate, unsigned block_size, unsigned max_delay )
 : MultiDelay( max_delay )
 , _filterbank( freqs, sample_rate )
 {
@@ -25,7 +25,7 @@ FilteredMultiDelay::FilteredMultiDelay( unsigned n_bands, unsigned sample_rate, 
     }
 }
 
-FilteredMultiDelay::~FilteredMultiDelay()
+laproque::FilteredMultiDelay::~FilteredMultiDelay()
 {
     for ( unsigned band = 0; band < _n_bands; band++ ) {
         delete [] _band_buffer[band];
@@ -35,7 +35,7 @@ FilteredMultiDelay::~FilteredMultiDelay()
     delete [] _band_weights;
 }
 
-void FilteredMultiDelay::process( float* input, float* output, unsigned long n_frames )
+void laproque::FilteredMultiDelay::process( float* input, float* output, unsigned long n_frames )
 {
     unsigned idx, band;
 
@@ -53,36 +53,36 @@ void FilteredMultiDelay::process( float* input, float* output, unsigned long n_f
     MultiDelay::process( _internal_buffer, output, n_frames );
 }
 
-unsigned FilteredMultiDelay::get_n_bands()
+unsigned laproque::FilteredMultiDelay::get_n_bands()
 {
     return _n_bands;
 }
 
-void FilteredMultiDelay::set_band_weight( float new_band_weight, unsigned band_idx )
+void laproque::FilteredMultiDelay::set_band_weight( float new_band_weight, unsigned band_idx )
 {
     if (band_idx < _n_bands) {
         _band_weights[band_idx] = new_band_weight;
     }
 }
 
-void FilteredMultiDelay::set_band_weights( std::vector< float > weights )
+void laproque::FilteredMultiDelay::set_band_weights( std::vector< float > weights )
 {
     for ( unsigned idx = 0; idx < _n_bands; idx++ ) {
         _band_weights[idx] = weights[idx];
     }
 }
 
-void FilteredMultiDelay::set_sample_rate( unsigned int sample_rate )
+void laproque::FilteredMultiDelay::set_sample_rate( unsigned int sample_rate )
 {
     _filterbank.set_sample_rate( sample_rate );
 }
 
-void FilteredMultiDelay::set_co_freqs( std::vector<float> co_freqs )
+void laproque::FilteredMultiDelay::set_co_freqs( std::vector<float> co_freqs )
 {
     _filterbank.set_co_freqs( co_freqs );
 }
 
-void FilteredMultiDelay::replace_buffer( float* sample_data, unsigned long n_frames )
+void laproque::FilteredMultiDelay::replace_buffer( float* sample_data, unsigned long n_frames )
 {
     MultiDelay::replace_buffer( sample_data, n_frames );
     _filterbank.reverse();

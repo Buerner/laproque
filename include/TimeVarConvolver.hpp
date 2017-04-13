@@ -11,6 +11,8 @@
 
 #include "Convolver.hpp"
 
+namespace laproque {
+
 /**
  * @class TimeVarConvolver
  * @brief Partitioned Convolver with exchangable partitions.
@@ -60,5 +62,7 @@ private:
     void _setup_ramps();
     
 };
+
+} // namespace laproque
 
 #endif /* TimeVarConvolver_hpp */

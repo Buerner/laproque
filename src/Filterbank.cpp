@@ -10,7 +10,7 @@
 #include <math.h>
 #include <cstring>
 
-Filterbank::Filterbank(
+laproque::Filterbank::Filterbank(
                        std::vector<float> co_freqs
                        , unsigned sample_rate
                        )
@@ -25,20 +25,20 @@ Filterbank::Filterbank(
     _low_band = _buffer1;
 }
 
-Filterbank::~Filterbank()
+laproque::Filterbank::~Filterbank()
 {
     delete [] _buffer1;
     delete [] _buffer2;
 }
 
-void Filterbank::set_sample_rate( unsigned sample_rate )
+void laproque::Filterbank::set_sample_rate( unsigned sample_rate )
 {
     for ( unsigned idx = 0; idx < _n_filters; idx++) {
         _filters[idx].set_sample_rate( sample_rate );
     }
 }
 
-void Filterbank::operator()( float in_sample, float* bands )
+void laproque::Filterbank::operator()( float in_sample, float* bands )
 {
     float low_band;
 
@@ -52,7 +52,7 @@ void Filterbank::operator()( float in_sample, float* bands )
     
 }
 
-void Filterbank::_update_filters()
+void laproque::Filterbank::_update_filters()
 {
     for ( unsigned idx = 0; idx < _n_filters; idx+=2 ) {
         _filters[idx].set_cutoff_freq( _crossover_freqs[idx/2] );
@@ -60,7 +60,7 @@ void Filterbank::_update_filters()
     }
 }
 
-void Filterbank::set_co_freqs( std::vector<float> new_co_freqs )
+void laproque::Filterbank::set_co_freqs( std::vector<float> new_co_freqs )
 {
     if ( new_co_freqs.size() == _crossover_freqs.size() ) {
         _crossover_freqs = new_co_freqs;
@@ -68,7 +68,7 @@ void Filterbank::set_co_freqs( std::vector<float> new_co_freqs )
     }
 }
 
-void Filterbank::process( float *input, float **output, unsigned long n_frames )
+void laproque::Filterbank::process( float *input, float **output, unsigned long n_frames )
 {
     _n_remaining = n_frames;
     unsigned band;
@@ -112,14 +112,14 @@ void Filterbank::process( float *input, float **output, unsigned long n_frames )
     }
 }
 
-void Filterbank::reverse()
+void laproque::Filterbank::reverse()
 {
     for ( unsigned idx = 0; idx < _n_filters; idx++ ) {
         _filters[idx].reverse();
     }
 }
 
-void Filterbank::renew( std::vector<float> new_co_freqs )
+void laproque::Filterbank::renew( std::vector<float> new_co_freqs )
 {
     _crossover_freqs = new_co_freqs;
     
@@ -134,12 +134,12 @@ void Filterbank::renew( std::vector<float> new_co_freqs )
     }
 }
 
-unsigned Filterbank::get_n_bands()
+unsigned laproque::Filterbank::get_n_bands()
 {
     return _n_bands;
 }
 
-void Filterbank::reset()
+void laproque::Filterbank::reset()
 {
     for ( unsigned flt = 0; flt < _n_filters; flt++ ) {
         _filters[flt].reset();

@@ -13,9 +13,10 @@
 #include <fftw3.h>
 #include <atomic>
 
-#include "include/complexmath.hpp"
+#include "complexmath.hpp"
 #include "FFThelper.hpp"
 
+namespace laproque {
 
 // TODO: The _freq_resp_parts array must be thread safe because
 // replacing could interfere with the audio porcessing. Maybe write a
@@ -131,6 +132,8 @@ protected:
     void _compute_freq_resp( float* imp_resp );
     
 };
+
+} // namespace laproque
 
 #endif /* Convolver_hpp */
 

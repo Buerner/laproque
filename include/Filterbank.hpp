@@ -12,6 +12,8 @@
 #include "Filter.hpp"
 #include <vector>
 
+namespace laproque {
+
 /**
  * @class Filterbank
  *
@@ -120,6 +122,7 @@ private:
     unsigned long _n_ready;
 };
 
+} // namespace laproque
 
 #endif /* defined(Filterbank_hpp) */
     
