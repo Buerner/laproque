@@ -7,7 +7,6 @@
 //
 
 #include "FilteredMultiDelay.hpp"
-#include "misc/include/timekeeper.hpp"
 
 FilteredMultiDelay::FilteredMultiDelay( unsigned n_bands, unsigned sample_rate, unsigned block_size, unsigned max_delay )
 : MultiDelay( max_delay )

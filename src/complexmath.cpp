@@ -6,7 +6,7 @@
 //  Licensed under the MIT License. See LICENSE.md file in the project root for full license information.  
 //
 
-#include "misc/include/complexmath.hpp"
+#include "complexmath.hpp"
 #include <math.h>
 
 void complex_multiply(fftwf_complex* factor1, fftwf_complex* factor2, fftwf_complex* result, unsigned N)

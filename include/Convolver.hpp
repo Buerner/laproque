@@ -13,7 +13,7 @@
 #include <fftw3.h>
 #include <atomic>
 
-#include "misc/include/complexmath.hpp"
+#include "include/complexmath.hpp"
 #include "FFThelper.hpp"
 
 
