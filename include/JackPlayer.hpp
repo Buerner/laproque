@@ -27,7 +27,7 @@ class JackPlayer : public JackPlugin
 public:
     JackPlayer();
     ~JackPlayer();
-    void render_audio(jack_nframes_t n_frames, jack_sample **in_buffers, jack_sample **out_buffers);
+    void render_audio(nframes_t n_frames, sample_t **in_buffers, sample_t **out_buffers);
     
     /** @returns True if the instance ist currently playing back audio. */
     bool is_playing();

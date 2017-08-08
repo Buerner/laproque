@@ -159,8 +159,8 @@ void laproque::JackPlayer::_setup_fades()
 }
 
 void laproque::JackPlayer::render_audio(  jack_nframes_t n_frames
-                              , jack_sample **in_buffers
-                              , jack_sample **out_buffers
+                              , sample_t **in_buffers
+                              , sample_t **out_buffers
                               )
 {
     if ( !_playing.load() ) {

@@ -14,14 +14,15 @@
 namespace laproque {
 
 // short version for jack sample type
-typedef jack_default_audio_sample_t jack_sample; 
+typedef jack_default_audio_sample_t sample_t;
+typedef jack_nframes_t nframes_t; 
 
 /**
  * @class JackPlugin
  *
  * @brief More or less an abstract/wrapper class hiding all the fuzz to create plugins for JACK Audio.
  *
- * Just create your class, inherit from this class, and initialize it with a name and number of input/output ports. Implement the render_audio(jack_nframes_t n_frames, jack_sample** in_buffers, jack_sample** out_buffers ); function and when ready use acitvate() to run your plugin.
+ * Just create your class, inherit from this class, and initialize it with a name and number of input/output ports. Implement the render_audio(nframes_t n_frames, sample_t** in_buffers, sample_t** out_buffers ); function and when ready use acitvate() to run your plugin.
  *
 */
 class JackPlugin
@@ -49,9 +50,9 @@ public:
      * @param in_buffers Array containing pointers to the audio input buffers for every JACK port.
      * @param out_buffers Array containing pointers to the audio output buffers for every JACK port.
      */
-    virtual void render_audio( jack_nframes_t n_frames
-                              ,jack_sample** in_buffers
-                              ,jack_sample** out_buffers
+    virtual void render_audio( nframes_t n_frames
+                              ,sample_t** in_buffers
+                              ,sample_t** out_buffers
                               ) = 0;
     
     /** @returns The pointer to the client instance */
@@ -80,19 +81,19 @@ public:
      *
      * Collects the audio data buffers and calls the render_audio() function of the casted plugin pointer.
      */
-    static int audio_callback( jack_nframes_t n_frames, void* plugin_instance )
+    static int audio_callback( nframes_t n_frames, void* plugin_instance )
     {
         // Cast custom JackClient.
         JackPlugin* plugin = (JackPlugin*)plugin_instance;
         
         // Get input buffers.
         for ( unsigned prt_nr = 0; prt_nr < plugin->_n_in_ports; prt_nr++ ) {
-            plugin->_in_buffers[prt_nr] = (jack_sample*) jack_port_get_buffer( plugin->_in_ports[prt_nr], n_frames );
+            plugin->_in_buffers[prt_nr] = (sample_t*) jack_port_get_buffer( plugin->_in_ports[prt_nr], n_frames );
         }
         
         // Get output buffers.
         for ( unsigned prt_nr = 0; prt_nr<plugin->_n_out_ports; prt_nr++ ) {
-            plugin->_out_buffers[prt_nr] = (jack_sample*) jack_port_get_buffer( plugin->_out_ports[prt_nr], n_frames );
+            plugin->_out_buffers[prt_nr] = (sample_t*) jack_port_get_buffer( plugin->_out_ports[prt_nr], n_frames );
         }
         
         // Call the function that generates all the audio data.
@@ -116,15 +117,15 @@ public:
     void write_imp_resp( unsigned n_frames );
     
     /** @brief Returns the audio sample rate in frames per second. */
-    jack_nframes_t get_sample_rate();
+    nframes_t get_sample_rate();
     
     /** @brief Returns the audio block processing size in frames. */
-    jack_nframes_t get_block_size();
+    nframes_t get_block_size();
     
 protected:
     jack_client_t* _jack_client;
-    jack_nframes_t _block_size;
-    jack_nframes_t _sample_rate;
+    nframes_t _block_size;
+    nframes_t _sample_rate;
     
     unsigned _n_in_ports;
     unsigned _n_out_ports;
@@ -133,8 +134,8 @@ private:
     jack_port_t** _in_ports;
     jack_port_t** _out_ports;
     
-    jack_sample** _in_buffers;
-    jack_sample** _out_buffers;
+    sample_t** _in_buffers;
+    sample_t** _out_buffers;
     
     bool _is_active;
 };

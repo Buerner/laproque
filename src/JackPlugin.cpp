@@ -28,8 +28,8 @@ laproque::JackPlugin::JackPlugin(const char* name,
     _out_ports = new jack_port_t*[_n_out_ports];
     
     // Allocate buffer pointer arrays.
-    _in_buffers = new jack_sample*[_n_in_ports];
-    _out_buffers = new jack_sample*[_n_out_ports];
+    _in_buffers = new sample_t*[_n_in_ports];
+    _out_buffers = new sample_t*[_n_out_ports];
     
     _jack_client = jack_client_open( name, (jack_options_t)0, NULL );
     if(_jack_client == NULL) printf ( "Unable to open JACK client: %s \n", name );
@@ -202,12 +202,12 @@ laproque::JackPlugin::~JackPlugin()
     delete [] _in_buffers;
 }
 
-jack_nframes_t laproque::JackPlugin::get_sample_rate()
+laproque::nframes_t laproque::JackPlugin::get_sample_rate()
 {
     return _sample_rate;
 }
 
-jack_nframes_t laproque::JackPlugin::get_block_size()
+laproque::nframes_t laproque::JackPlugin::get_block_size()
 {
     return _block_size;
 }
