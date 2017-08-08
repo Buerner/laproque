@@ -5,11 +5,11 @@ CFLAGS = -Wall -std=c++11 -O3
 OS := $(shell uname)
 
 ifeq ($(OS),Darwin)
-    CFLAGS +=  -mmacosx-version-min=10.10
+    CFLAGS += -mmacosx-version-min=10.7
+	CFLAGS += -stdlib=libc++
 endif
 
-SEARCH_PATHS =  -I./ \
-				-I./include		   
+SEARCH_PATHS = -I./include		   
 
 OBJ_DIR = build/.obj/
 BUILD_DIR = build/
